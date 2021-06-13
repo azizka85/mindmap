@@ -18,27 +18,7 @@ const context = new MindMapContext(toolBar, mindMap);
 mindMap.context = context;
 toolBar.context = context;
 
-mindMap.updateMindNodes([
-  {
-    id: 1,
-    label: 'Node 1',
-    mindNodes: [
-      {
-        id: 2,
-        label: 'Node 1',
-        mindNodes: []
-      }, {
-        id: 3,
-        label: 'Node 2',
-        mindNodes: []
-      }, {
-        id: 4,
-        label: 'Node 3',
-        mindNodes: []
-      }
-    ]
-  }
-]);
+mindMap.loadFromLocalStorage();
 
 container.appendChild(toolBar);
 container.appendChild(mindMap);

@@ -37,12 +37,14 @@ export default class MindNode extends HTMLLIElement {
     this.#article.oninput = this.onNodeInput.bind(this);
     this.#article.onclick = this.onNodeClicked.bind(this);
     this.#article.onkeydown = this.onNodeKeyPressed.bind(this);
+
+    this.index = 1;
   }
 
   static get observedAttributes() { return ['data-label', 'data-index']; }
 
   set #listVisible(value) {
-    this.#ul.style.display = value && this.#ul.children.length > 0 ? '' : 'none';   
+    this.#ul.style.display = value ? '' : 'none';   
   }
 
   get context() {
@@ -73,11 +75,20 @@ export default class MindNode extends HTMLLIElement {
     this.setAttribute('data-index', value);
   }
 
+  get index() {
+    return this.#article.tabIndex;
+  }
+
+  set index(value) {
+    this.#article.tabIndex = value;
+  }
+
   get mindNode() {
     return this.#mindNode;
   }
 
   set mindNode(node) {
+    this.#mindNode = node;
     this.label = node.label;
     this.mid = node.id;
 
@@ -94,7 +105,7 @@ export default class MindNode extends HTMLLIElement {
     } else {
       this.#article.classList.remove('collapsed');
     }
-    this.#listVisible = !value;
+    this.#listVisible = this.#ul.children.length > 0 && !value;
   }
 
   get editable() {
@@ -146,15 +157,14 @@ export default class MindNode extends HTMLLIElement {
       id: Date.now(),
       label: '',
       mindNodes: []       
-    };
-
-    this.collapsed = false;
+    };    
 
     const item = new MindNode();
 
     item.parentMindNode = this;
     item.context = this.context;
     item.mindNode = newNode;
+    item.editable = true;
     
     this.#ul.appendChild(item);
     this.mindNode.mindNodes.push(newNode);
@@ -163,6 +173,8 @@ export default class MindNode extends HTMLLIElement {
       this.context.toolBar.canSave = true;
       this.context.toolBar.activeNode = item;
     }
+
+    this.collapsed = false;
   }
 
   removeMindNode(item) {    
@@ -186,7 +198,9 @@ export default class MindNode extends HTMLLIElement {
 
     if(focusIndex >= 0) {
       this.moveToMindNode(focusIndex); 
-    }        
+    } else if(this.context) {
+      this.context.toolBar.activeNode = this;
+    }       
   }  
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -209,7 +223,7 @@ export default class MindNode extends HTMLLIElement {
 
   updateMindId(value) {
     this.mindNode.id = +value;
-    this.#article.tabIndex = +value;
+    // this.#article.tabIndex = +value;
   }
 
   updateMindNodes(mindNodes = []) {

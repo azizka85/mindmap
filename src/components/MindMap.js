@@ -109,6 +109,7 @@ export class MindMap extends HTMLUListElement {
     item.parentMindNode = this;
     item.context = this.context;
     item.mindNode = newNode;
+    item.editable = true;
     
     this.appendChild(item);
     this.#mindNodes.push(newNode);
