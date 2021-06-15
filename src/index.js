@@ -1,6 +1,6 @@
 import './styles/main.scss';
 import MindMapContext from './components/MindMapContext';
-import { MindMap } from './components/MindMap';
+import MindMap from './components/MindMap';
 import ToolBar from './components/ToolBar';
 import MindNode from './components/MindNode';
 

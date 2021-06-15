@@ -1,8 +1,8 @@
 import MindNode from "./MindNode";
 
-export const MindMapContextKey = 'mindmap';
+const MindMapContextKey = 'mindmap';
 
-export class MindMap extends HTMLUListElement {
+export default class MindMap extends HTMLUListElement {
   #mindNodes;
   #context;
 
